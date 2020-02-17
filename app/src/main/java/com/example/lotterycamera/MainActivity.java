@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // Start the activity with camera_intent,
                 // and request pic id
-                startActivityForResult(camera_intent, pic_id);
+                if (camera_intent.resolveActivity(getPackageManager()) != null)
+                    startActivityForResult(camera_intent, pic_id);
             }
         });
     }
@@ -59,14 +60,13 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Match the request 'pic id" with requestCode
-        if (requestCode == pic_id) {
-
-            // BitMap is data structure of image file
+        if (requestCode == pic_id && resultCode == RESULT_OK) {
+            // BitMap is a data structure of image file
             // which stores the image in memory
             Bitmap photo = (Bitmap) data.getExtras()
                     .get("data");
 
-            // Set the image in imageview for display
+            // Set the image in ImageView for display
             ivPhoto.setImageBitmap(photo);
         }
     }
