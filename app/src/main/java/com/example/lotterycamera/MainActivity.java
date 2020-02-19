@@ -13,10 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Define the pic id
-    private static final int pic_id = 123;
+    // Define the picture id
+    private static final int PIC_ID = 123;
 
-    // Define the Button and ImageView type variables
+    // GUI variables
     Button btCamera;
     ImageView ivPhoto;
 
@@ -24,10 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // By ID we can get each component
-        // which id is assigned in XML file
-        // get Buttons and ImageView.
         btCamera = findViewById(R.id.btCamera);
         ivPhoto = findViewById(R.id.ivPhoto);
 
@@ -37,17 +33,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
                 // Create the camera_intent ACTION_IMAGE_CAPTURE
-                // it will open the camera for capture the image
+                // it will open the built-in camera for capturing the image
                 Intent camera_intent
                         = new Intent(MediaStore
                         .ACTION_IMAGE_CAPTURE);
 
-                // Start the activity with camera_intent,
-                // and request pic id
+                // Start the activity with camera_intent and request pic id
                 if (camera_intent.resolveActivity(getPackageManager()) != null)
-                    startActivityForResult(camera_intent, pic_id);
+                    startActivityForResult(camera_intent, PIC_ID);
             }
         });
     }
@@ -58,16 +52,17 @@ public class MainActivity extends AppCompatActivity {
                                     Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Match the request 'pic id" with requestCode
-        if (requestCode == pic_id && resultCode == RESULT_OK) {
+        // Match the request 'pic id' with requestCode and resultCode
+        if (requestCode == PIC_ID && resultCode == RESULT_OK) {
             // BitMap is a data structure of image file
             // which stores the image in memory
-            Bitmap photo = (Bitmap) data.getExtras()
-                    .get("data");
+            // Disadvantage: low resolution quality (only Thumbnail)
+            if (data.getExtras() != null) {     // Check if Intent is empty
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                // Set the image in ImageView for display
+                ivPhoto.setImageBitmap(photo);
+            }
 
-            // Set the image in ImageView for display
-            ivPhoto.setImageBitmap(photo);
         }
     }
 }
