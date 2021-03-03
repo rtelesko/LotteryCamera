@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 // Start the activity with camera_intent and request pic id
                 if (camera_intent.resolveActivity(getPackageManager()) != null)
                     startActivityForResult(camera_intent, PIC_ID);
+                Log.d("ImplicitIntent", "Can't handle this!");
             }
         });
     }
